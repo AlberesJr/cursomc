@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
@@ -23,19 +24,21 @@ public class Produto implements Serializable {
 	private double preco;
 	
 	@ManyToMany
-	@JoinTable(name="PRODUTO_CATEGORIA",
-			joinColumns = @JoinColumn(name="prodto_id"),
-			inverseJoinColumns = @JoinColumn(name= "categoria_id")
+	@JoinTable(name = "PRODUTO_CATEGORIA",
+	joinColumns = @JoinColumn(name = "produto_id"),
+	inverseJoinColumns = @JoinColumn(name = "categoria_id")
 			)
 	private List<Categoria> categorias = new ArrayList<>();
-
-	public Produto() {}
 
 	public Produto(Integer id, String nome, double preco) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.preco = preco;
+	}
+
+	public Produto() {
+		super();
 	}
 
 	public Integer getId() {
@@ -74,7 +77,7 @@ public class Produto implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + id;
 		return result;
 	}
 
@@ -87,15 +90,11 @@ public class Produto implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Produto other = (Produto) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (id != other.id)
 			return false;
 		return true;
 	}
 	
 	
-	
-	
+
 }
