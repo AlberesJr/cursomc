@@ -25,15 +25,14 @@ public class Pedido implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@JsonFormat(pattern="dd/MM/yyy HH:mm")
+
+	@JsonFormat(pattern = "dd/MM/yyy HH:mm")
 	private Date instante;
 
 	@JsonManagedReference
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
 	private Pagamento pagamento;
 
-	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
@@ -42,7 +41,7 @@ public class Pedido implements Serializable {
 	@JoinColumn(name = "enderecoDeEntrega_id")
 	private Endereco enderecoDeEntrega;
 
-	@OneToMany(mappedBy="id.pedido")
+	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> itens = new HashSet<>();
 
 	public Pedido() {
@@ -96,7 +95,7 @@ public class Pedido implements Serializable {
 	public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) {
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
-	
+
 	public Set<ItemPedido> getItens() {
 		return itens;
 	}

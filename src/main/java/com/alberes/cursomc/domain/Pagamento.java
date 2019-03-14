@@ -11,20 +11,20 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.alberes.cursomc.domain.enums.EstadoPagamento;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Pagamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private Integer id;
 	private Integer estado;
-	
-	@JsonBackReference
+
+	@JsonIgnore
 	@OneToOne
-	@JoinColumn(name="pedido_id")
+	@JoinColumn(name = "pedido_id")
 	@MapsId
 	private Pedido pedido;
 
