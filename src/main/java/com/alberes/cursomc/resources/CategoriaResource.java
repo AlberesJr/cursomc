@@ -14,15 +14,15 @@ import com.alberes.cursomc.domain.Categoria;
 import com.alberes.cursomc.services.CategoriaService;
 
 @RestController
-@RequestMapping(value="/categorias")
+@RequestMapping(value = "/categorias")
 public class CategoriaResource {
-	
+
 	@Autowired
 	private CategoriaService service;
-	
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> listar(@PathVariable Integer id) {
-		
+
 		Categoria obj = service.buscar(id);
 		return ResponseEntity.ok().body(obj);
 
