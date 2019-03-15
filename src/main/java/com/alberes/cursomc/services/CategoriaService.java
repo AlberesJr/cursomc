@@ -36,8 +36,9 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria cat) {
-		find(cat.getId());
-		return repo.save(cat);
+		Categoria newCat = find(cat.getId());
+		updateData(newCat, cat);
+		return repo.save(newCat);
 	}
 
 	public void delete(Integer id) {
@@ -47,17 +48,21 @@ public class CategoriaService {
 			throw new DataIntegrityException("Não é possível excluir uma categoria que contém produtos.");
 		}
 	}
-	
-	public List<Categoria> findAll(){
+
+	public List<Categoria> findAll() {
 		return repo.findAll();
 	}
 
-	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
 	}
-	
+
 	public Categoria fromDTO(CategoriaDTO catDto) {
 		return new Categoria(catDto.getId(), catDto.getNome());
+	}
+
+	public void updateData(Categoria newCat, Categoria cat) {
+		newCat.setNome(cat.getNome());
 	}
 }
