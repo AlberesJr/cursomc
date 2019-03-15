@@ -2,6 +2,9 @@ package com.alberes.cursomc.dto;
 
 import java.io.Serializable;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.alberes.cursomc.domain.Categoria;
 
 public class CategoriaDTO implements Serializable {
@@ -27,6 +30,8 @@ public class CategoriaDTO implements Serializable {
 		this.id = id;
 	}
 
+	@NotEmpty(message="Preenchimento obrigtório")
+	@Length(min=5, max=80, message="Tamanho entre 5 e 80")
 	public String getNome() {
 		return nome;
 	}
