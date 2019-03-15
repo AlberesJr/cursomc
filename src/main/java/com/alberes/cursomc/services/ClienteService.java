@@ -9,9 +9,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.alberes.cursomc.domain.Cidade;
 import com.alberes.cursomc.domain.Cliente;
+import com.alberes.cursomc.domain.Endereco;
+import com.alberes.cursomc.domain.enums.TipoCliente;
 import com.alberes.cursomc.dto.ClienteDTO;
+import com.alberes.cursomc.dto.ClienteNewDTO;
+import com.alberes.cursomc.repositories.CidadeRepository;
 import com.alberes.cursomc.repositories.ClienteRepository;
+import com.alberes.cursomc.repositories.EnderecoRepository;
 import com.alberes.cursomc.services.exceptions.DataIntegrityException;
 import com.alberes.cursomc.services.exceptions.ObjectNotFoudException;
 
@@ -20,6 +26,10 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository repo;
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public Cliente find(Integer id) {
 		Cliente cli = repo.findOne(id);
@@ -27,6 +37,13 @@ public class ClienteService {
 			throw new ObjectNotFoudException("Objeto não encontrado! Id: "
 					+ id + ", Tipo: " + Cliente.class.getName() );
 		}
+		return cli;
+	}
+	
+	public Cliente insert(Cliente cli) {
+		cli.setId(null);
+		cli = repo.save(cli);
+		enderecoRepository.save(cli.getEnderecos());
 		return cli;
 	}
 	
@@ -54,8 +71,23 @@ public class ClienteService {
 	}
 	
 	public Cliente fromDTO(ClienteDTO cliDto) {
-		//return new Cliente(catDto.getId(), catDto.getNome());
 		return new Cliente(cliDto.getId(), cliDto.getNome(), cliDto.getEmail(), null, null);
+	}
+	
+	public Cliente fromDTO(ClienteNewDTO cliDto) {
+		Cliente cli = new Cliente(null, cliDto.getNome(), cliDto.getEmail(), cliDto.getCpfOuCnpj(), TipoCliente.toEnum(cliDto.getTipo()));
+		Cidade cid = cidadeRepository.findOne(cliDto.getCidadeId());
+		Endereco end = new Endereco(null, cliDto.getLogradouro(), cliDto.getNumero(), cliDto.getComplemento(), cliDto.getBairro(), cliDto.getCep(), cli, cid);
+		cli.getEnderecos().add(end);
+		cli.getTelefones().add(cliDto.getTelefone1());
+		
+		if (cliDto.getTelefone2() != null) {
+			cli.getTelefones().add(cliDto.getTelefone2());
+		}
+		if (cliDto.getTelefone3() != null) {
+			cli.getTelefones().add(cliDto.getTelefone3());
+		}
+		return cli;
 	}
 	
 	private void updateData(Cliente newCli, Cliente cli) {
