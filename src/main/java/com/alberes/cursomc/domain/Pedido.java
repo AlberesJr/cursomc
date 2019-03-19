@@ -158,7 +158,5 @@ public class Pedido implements Serializable {
 		builder.append("Valor total: " +nf.format(getValorTotal()));
 		return builder.toString();
 	}
-
-	
 	
 }
