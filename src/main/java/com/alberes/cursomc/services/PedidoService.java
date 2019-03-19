@@ -13,7 +13,6 @@ import com.alberes.cursomc.domain.enums.EstadoPagamento;
 import com.alberes.cursomc.repositories.ItemPedidoRepository;
 import com.alberes.cursomc.repositories.PagamentoRepository;
 import com.alberes.cursomc.repositories.PedidoRepository;
-import com.alberes.cursomc.repositories.ProdutoRepository;
 import com.alberes.cursomc.services.exceptions.ObjectNotFoudException;
 
 @Service
@@ -29,8 +28,6 @@ public class PedidoService {
 	private ProdutoService produtoService;
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
-	@Autowired
-	private ProdutoRepository produtoRepository;
 
 	public Pedido find(Integer id) {
 		Pedido obj = repo.findOne(id);

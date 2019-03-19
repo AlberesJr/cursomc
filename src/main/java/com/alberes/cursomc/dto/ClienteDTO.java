@@ -10,27 +10,27 @@ import com.alberes.cursomc.domain.Cliente;
 import com.alberes.cursomc.services.validation.ClienteUpdate;
 
 @ClienteUpdate
-public class ClienteDTO implements Serializable{
+public class ClienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
-	
-	@NotEmpty(message="Prenchimento obrigatório")
-	@Length(min=5, max=120, message="Não pode ser menor que 5 e maior que 120")
+
+	@NotEmpty(message = "Prenchimento obrigatório")
+	@Length(min = 5, max = 120, message = "Não pode ser menor que 5 e maior que 120")
 	private String nome;
-	
+
 	@NotEmpty
 	@Email
 	private String email;
-	
+
 	public ClienteDTO() {
-		
+
 	}
-	
-public ClienteDTO(Cliente cli) {
+
+	public ClienteDTO(Cliente cli) {
 		id = cli.getId();
 		nome = cli.getNome();
-		email =  cli.getEmail();
+		email = cli.getEmail();
 	}
 
 	public Integer getId() {
@@ -56,7 +56,5 @@ public ClienteDTO(Cliente cli) {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
 
 }
