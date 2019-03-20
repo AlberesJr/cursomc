@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.alberes.cursomc.domain.Cidade;
@@ -24,6 +25,8 @@ import com.alberes.cursomc.services.exceptions.ObjectNotFoudException;
 @Service
 public class ClienteService {
 
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	@Autowired
 	private ClienteRepository repo;
 	@Autowired
@@ -71,11 +74,11 @@ public class ClienteService {
 	}
 	
 	public Cliente fromDTO(ClienteDTO cliDto) {
-		return new Cliente(cliDto.getId(), cliDto.getNome(), cliDto.getEmail(), null, null);
+		return new Cliente(cliDto.getId(), cliDto.getNome(), cliDto.getEmail(), null, null, null);
 	}
 	
 	public Cliente fromDTO(ClienteNewDTO cliDto) {
-		Cliente cli = new Cliente(null, cliDto.getNome(), cliDto.getEmail(), cliDto.getCpfOuCnpj(), TipoCliente.toEnum(cliDto.getTipo()));
+		Cliente cli = new Cliente(null, cliDto.getNome(), cliDto.getEmail(), cliDto.getCpfOuCnpj(), TipoCliente.toEnum(cliDto.getTipo()), passwordEncoder.encode(cliDto.getSenha()));
 		Cidade cid = cidadeRepository.findOne(cliDto.getCidadeId());
 		Endereco end = new Endereco(null, cliDto.getLogradouro(), cliDto.getNumero(), cliDto.getComplemento(), cliDto.getBairro(), cliDto.getCep(), cli, cid);
 		cli.getEnderecos().add(end);
