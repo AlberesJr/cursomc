@@ -18,14 +18,15 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter{
 
 	private JWTUtil jwtUtil;
 	
-	private UserDetailsService uds;
+	private UserDetailsService userDetailsService;
 	
-	public JWTAuthorizationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserDetailsService uds) {
+	public JWTAuthorizationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserDetailsService userDetailsService) {
 		super(authenticationManager);
 		this.jwtUtil = jwtUtil;
-		this.uds = uds;
+		this.userDetailsService = userDetailsService;
 	}
 	
+	@Override
 	protected void doFilterInternal(HttpServletRequest req,
 										HttpServletResponse res,
 										FilterChain chain) throws IOException, ServletException {
@@ -43,7 +44,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter{
 	private UsernamePasswordAuthenticationToken getAuthentication(String token) {
 		if(jwtUtil.tokenValido(token)) {
 			String username = jwtUtil.getUsername(token);
-			UserDetails user = uds.loadUserByUsername(username);
+			UserDetails user = userDetailsService.loadUserByUsername(username);
 			return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 		}
 		return null;
