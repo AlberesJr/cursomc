@@ -16,10 +16,10 @@ public class JWTUtil {
 	private String secret;
 	
 	@Value("${jwt.expiration}")
-	private long expiration;
+	private Long expiration;
 	
 	public String generateToken(String username) {
-		return Jwts.builder()
+			return Jwts.builder()
 				.setSubject(username)
 				.setExpiration(new Date(System.currentTimeMillis() + expiration))
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
@@ -28,11 +28,11 @@ public class JWTUtil {
 	
 	public boolean tokenValido(String token) {
 		Claims claims = getClaims(token);
-		if(claims != null) {
+		if (claims != null) {
 			String username = claims.getSubject();
 			Date expirationDate = claims.getExpiration();
 			Date now = new Date(System.currentTimeMillis());
-			if(username != null && expirationDate != null && now.before(expirationDate)) {
+			if (username != null && expirationDate != null && now.before(expirationDate)) {
 				return true;
 			}
 		}
@@ -42,7 +42,7 @@ public class JWTUtil {
 
 	public String getUsername(String token) {
 		Claims claims = getClaims(token);
-		if(claims != null) {
+		if (claims != null) {
 			return claims.getSubject();
 		}
 		return null;
