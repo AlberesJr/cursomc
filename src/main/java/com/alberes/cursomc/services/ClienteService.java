@@ -1,5 +1,6 @@
 package com.alberes.cursomc.services;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alberes.cursomc.domain.Cidade;
 import com.alberes.cursomc.domain.Cliente;
@@ -36,6 +38,8 @@ public class ClienteService {
 	private CidadeRepository cidadeRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private S3Service s3Service;
 	
 	public Cliente find(Integer id) {
 		
@@ -106,7 +110,10 @@ public class ClienteService {
 	private void updateData(Cliente newCli, Cliente cli) {
 		newCli.setNome(cli.getNome());
 		newCli.setEmail(cli.getEmail());
-		
+	}
+	
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return s3Service.uploadFile(multipartFile);
 	}
 	
 }
