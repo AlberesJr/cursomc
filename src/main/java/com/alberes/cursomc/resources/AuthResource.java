@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alberes.cursomc.dto.EmailDTO;
 import com.alberes.cursomc.security.JWTUtil;
 import com.alberes.cursomc.security.UserSS;
+import com.alberes.cursomc.services.AuthService;
 import com.alberes.cursomc.services.UserService;
 
 @RestController
